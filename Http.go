@@ -26,19 +26,19 @@ type UserRequest struct {
 }
 
 type Product struct {
-	Nama_Product      string
-	Jenis_Produk      string
-	Harga_Produk      int
-	Tempat_Pembelian  string
-	Nomor_Barcode     int
-	Tanggal_Pembelian int
+	Nama_Product      string    `json:"Nama Produk"`
+	Jenis_Produk      string    `json:"Jenis Produk"`
+	Harga_Produk      int       `json:"Harga Produk"`
+	Tempat_Pembelian  string    `json:"Tempat Pembelian"`
+	Nomor_Barcode     int       `json:"Nomor Barcode"`
+	Tanggal_Pembelian time.Time `json:"Tanggal Pembelian"`
 }
 
 func addJWTRoute(app *fiber.App) {
-	users := []Product{
-		Product{"mie", "food", 1000, "mini market", 10000,time.Now().Hour()},
-		Product{"susu", "minuman", 50000, "mini market", 575857857,time.Now().Hour()},
-		Product{"jus", "food", 1000, "mini market", 10000,time.Now().Hour()},
+	produk := []Product{
+		Product{"mie", "food", 1000, "mini market", 10000, time.Now()},
+		Product{"susu", "minuman", 50000, "mini market", 575857857, time.Now()},
+		Product{"jus", "food", 1000, "mini market", 10000, time.Now()},
 	}
 
 	apiGroup := app.Group("/api")
@@ -72,10 +72,10 @@ func addJWTRoute(app *fiber.App) {
 		return
 	})
 
-	apiGroup.Use("/users", jwtware.New(jwtware.Config{
+	apiGroup.Use("/produk", jwtware.New(jwtware.Config{
 		SigningKey: signingKey,
 	}))
-	apiGroup.Get("/users", func(c *fiber.Ctx) error {
-		return c.JSON(users)
+	apiGroup.Get("/produk", func(c *fiber.Ctx) error {
+		return c.JSON(produk)
 	})
 }
